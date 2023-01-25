@@ -1,0 +1,24 @@
+@model RazorSectionsLayouts.Controllers.Model
+
+@{
+  ViewBag.Title = "title";
+  Layout = "_Layout3Columns";
+}
+
+@section secondary {
+  <div class="m-4 font-bold bg-gray-200 rounded-md p-3">Parents</div>
+
+  <ul>
+    @foreach (var item in Model.Items)
+    {
+      <li class="m-4 font-semibold @(Model.Item.Id == item.Id ? "bg-sky-200" : "bg-sky-50") rounded-md p-3">@Html.ActionLink(item.Name, "ParentChild", new
+                                                                                                            {
+                                                                                                              id = item.Id
+                                                                                                            })</li>
+    }
+  </ul>
+}
+
+@section main {
+  <div class="m-4 font-bold">@Model.Item.Name</div>
+}
