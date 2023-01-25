@@ -1,4 +1,4 @@
-namespace AspNetCoreMvcHtmx.Controllers;
+namespace RazorSectionsLayouts.Controllers;
 
 public static class Constants
 {

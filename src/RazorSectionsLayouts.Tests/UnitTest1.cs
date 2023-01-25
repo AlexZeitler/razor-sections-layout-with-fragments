@@ -1,4 +1,4 @@
-namespace AspNetCoreMvcHtmx.Tests;
+namespace RazorSectionsLayouts.Tests;
 
 public class UnitTest1
 {

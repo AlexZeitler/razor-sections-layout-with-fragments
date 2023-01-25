@@ -1,4 +1,4 @@
-using AspNetCoreMvcHtmx.Core;
+using RazorSectionsLayouts.Core;
 using Serilog;
 using Serilog.Extensions.Logging;
 
