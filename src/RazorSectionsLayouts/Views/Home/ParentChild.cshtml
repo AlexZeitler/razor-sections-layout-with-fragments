@@ -21,10 +21,12 @@
   void RenderItem(
     ItemModel item)
   {
-    <li class="m-4 font-semibold @(item.Selected ? "bg-sky-200" : "bg-sky-50") rounded-md p-3">@Html.ActionLink(item.Name, "Detail", new
-                                                                                               {
-                                                                                                 id = item.Id
-                                                                                               })</li>
+    <li class="m-4 font-semibold @(item.Selected ? "bg-sky-200" : "bg-sky-50") rounded-md p-3">
+      @Html.ActionLink(item.Name, "Detail", new
+      {
+        id = item.Id
+      })
+    </li>
   }
 }
 
