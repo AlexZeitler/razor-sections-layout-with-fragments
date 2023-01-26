@@ -1,24 +1,74 @@
-@model RazorSectionsLayouts.Controllers.Model
+@using RazorSectionsLayouts.Controllers
+@model RazorSectionsLayouts.Controllers.FragmentModel
 
 @{
-  ViewBag.Title = "title";
+  ViewBag.Title = GetTitle(Model);
+
+  string GetTitle(
+    FragmentModel model)
+  {
+    return model switch {
+      DetailsModel dm => $"{dm.SelectedItem.Name}",
+      ListModel => "Items",
+      _ => throw new ArgumentOutOfRangeException(nameof(model))
+      };
+  }
+
   Layout = "_Layout3Columns";
 }
 
-@section secondary {
+@{
+  void RenderItem(
+    ItemModel item)
+  {
+    <li class="m-4 font-semibold @(item.Selected ? "bg-sky-200" : "bg-sky-50") rounded-md p-3">@Html.ActionLink(item.Name, "Detail", new
+                                                                                               {
+                                                                                                 id = item.Id
+                                                                                               })</li>
+  }
+}
+
+@{
+  void RenderItems(
+    ListModel listModel)
+  {
+@section list {
+
   <div class="m-4 font-bold bg-gray-200 rounded-md p-3">Parents</div>
 
   <ul>
-    @foreach (var item in Model.Items)
+    @foreach (var item in listModel.Items)
     {
-      <li class="m-4 font-semibold @(Model.Item.Id == item.Id ? "bg-sky-200" : "bg-sky-50") rounded-md p-3">@Html.ActionLink(item.Name, "ParentChild", new
-                                                                                                            {
-                                                                                                              id = item.Id
-                                                                                                            })</li>
+      RenderItem(item);
     }
   </ul>
+}  }
 }
 
-@section main {
-  <div class="m-4 font-bold">@Model.Item.Name</div>
+
+@{
+  void RenderParentChild(
+    DetailsModel parentChildModel)
+  {
+    RenderItems(parentChildModel.List);
+
+@section detail {
+  <div class="m-4 font-bold">@parentChildModel.SelectedItem.Name</div>
+}  }
+}
+
+
+@{
+  switch (Model.FragmentId)
+  {
+    case "list":
+      RenderItems(Model as ListModel ?? throw new InvalidOperationException(nameof(ListModel)));
+      break;
+    case "item":
+      RenderItem(Model as ItemModel ?? throw new InvalidOperationException(nameof(ItemModel)));
+      break;
+    case "detail":
+      RenderParentChild(Model as DetailsModel ?? throw new InvalidOperationException(nameof(DetailsModel)));
+      break;
+  }
 }

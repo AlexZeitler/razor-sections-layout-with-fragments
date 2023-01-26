@@ -31,10 +31,6 @@ public class HomeController : Controller
     return View();
   }
 
-  public IActionResult Parent()
-  {
-    return View(Items);
-  }
 
   [ResponseCache(
     Duration = 0,
@@ -51,20 +47,81 @@ public class HomeController : Controller
     );
   }
 
+  public IActionResult List()
+  {
+    return View("ParentChild", new ListModel(Items));
+  }
+
   [HttpGet, Route("/childs/{id:int}")]
-  public IActionResult ParentChild(
+  public IActionResult Detail(
     [FromRoute] int id
   )
   {
-    var item = Items.First(i => i.Id == id);
-    return View(new Model(item, Items));
+    return View("ParentChild", new DetailsModel(Items, id));
   }
 }
 
-public record Model(
-  Item Item,
-  List<Item> Items
-);
+public class FragmentModel
+{
+  public FragmentModel(
+    string fragmentId
+  )
+  {
+    FragmentId = fragmentId;
+  }
+
+  public string FragmentId { get; set; }
+}
+
+// Item
+public class ItemModel : FragmentModel
+{
+  public string Name { get; }
+  public int Id { get; }
+  public bool Selected { get; }
+
+  public ItemModel(
+    Item item,
+    bool selected
+  ) : base("list")
+  {
+    Selected = selected;
+    Id = item.Id;
+    Name = item.Name;
+  }
+}
+
+// List only
+public class ListModel : FragmentModel
+{
+  public List<ItemModel> Items { get; }
+
+  public ListModel(
+    List<Item> items,
+    int selectedItemId = 0
+  ) : base("list")
+  {
+    Items = items.Select(i => new ItemModel(i, i.Id == selectedItemId))
+      .ToList();
+  }
+}
+
+// List and Details
+public class DetailsModel : FragmentModel
+{
+  public DetailsModel(
+    List<Item> items,
+    int selectedItemId
+  ) : base("detail")
+  {
+    var selectedItem = items.FirstOrDefault(i => i.Id == selectedItemId) ?? throw new ArgumentNullException();
+    SelectedItem = new ItemModel(selectedItem, true);
+    List = new ListModel(items, selectedItemId);
+  }
+
+  public ItemModel SelectedItem { get; init; }
+  public ListModel List { get; init; }
+}
 
 public record Item(
   int Id,
