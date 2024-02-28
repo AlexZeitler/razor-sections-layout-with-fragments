@@ -38,7 +38,7 @@
 
   <div class="m-4 font-bold bg-gray-200 rounded-md p-3">Parents</div>
 
-  <ul>
+  <ul hx-boost="true">
     @foreach (var item in listModel.Items)
     {
       RenderItem(item);

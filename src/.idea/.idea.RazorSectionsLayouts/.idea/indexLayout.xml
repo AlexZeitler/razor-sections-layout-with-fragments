@@ -3,6 +3,7 @@
   <component name="UserContentModel">
     <attachedFolders>
       <Path>../../RazorSectionsLayoutsTemplate</Path>
+      <Path>../../razor-sections-layout-with-fragments</Path>
       <Path>../../spike-razor-sections-layout</Path>
     </attachedFolders>
     <explicitIncludes />
