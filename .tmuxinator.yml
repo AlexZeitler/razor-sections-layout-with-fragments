@@ -1,4 +1,4 @@
-name: MyRazorPagesApp
+name: RazorSectionsLayouts
 root: ./
 
 # Runs before everything. Use it to start daemons etc.
